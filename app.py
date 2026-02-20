@@ -24,7 +24,7 @@ if page == "Home":
     with col2:
         st.write("Hello! I'm **Jose Raphael R. Lawas**.")
         st.write("Aspiring Full-Stack Developer and AI Enthusiast.")
-        st.metric("Projects Completed", "5+")
+        st.metric("Projects Completed", "10+")
         st.progress(80)
 
 # About Me
@@ -88,27 +88,30 @@ elif page == "Projects":
 
 # Contact
 elif page == "Contact":
-    import base64
-
     st.title("📫 Contact Me")
 
     st.write("📧 Email: joseraphaellawas@gmail.com")
     st.write("📍 Location: Carcar City, Cebu")
 
-    st.markdown("---")
+    with st.form("contact_form"):
+        name = st.text_input("Your Name")
+        email = st.text_input("Your Email")
+        message = st.text_area("Message")
+        submit = st.form_submit_button("Send")
 
-    st.subheader("📄 My Resume")
+        if submit:
+            st.success(f"Thank you {name}! Your message has been sent.")
+
+    st.markdown("---")
+    st.subheader("📄 Download My Resume")
 
     try:
-        with open("resume.pdf", "rb") as f:
-            base64_pdf = base64.b64encode(f.read()).decode("utf-8")
-
-        pdf_display = f"""
-        <iframe src="data:application/pdf;base64,{base64_pdf}" 
-        width="100%" height="800px" type="application/pdf"></iframe>
-        """
-
-        st.markdown(pdf_display, unsafe_allow_html=True)
-
+        with open("resume.pdf", "rb") as file:
+            st.download_button(
+                label="Download Resume",
+                data=file,
+                file_name="Jose_Raphael_R_Lawas_Resume.pdf",
+                mime="application/pdf"
+            )
     except FileNotFoundError:
         st.error("Resume file not found. Make sure resume.pdf is inside the project folder.")
